@@ -29,14 +29,17 @@
             </button>
 
             <div class="p-4 h-full overflow-y-auto">
-                <img src="{% static 'KwentasApp/img/logobrowser.jpg' %}" alt="Logo" class="h-8 w-auto mb-4">
-                <nav class="space-y-2">
-                    <ul>
+                <div class="flex items-center">
+                    <img src="{% static 'KwentasApp/img/logobrowser.jpg' %}" alt="Logo" class="h-8 w-auto mb-1">
+                    <span class="ml-2 text-gray-700 dark:text-gray-300">Kwentas Klaras Digital PMIS v1.0</span>
+                </div>
+                <nav class="mt-10">
+                    <ul class="space-y-4"> <!-- Added space-y-4 to the <ul> element -->
                         <!-- Main Navigation -->
                         <li class="mb-2">
                             <a href="{% url 'homepage' %}" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                                 <i class="fas fa-home mr-2"></i>
-                                Dashboard
+                                Homepage
                             </a>
                         </li>
                         <li class="mb-2">
@@ -87,6 +90,54 @@
                                 Obligations
                             </a>
                         </li>
+
+                        <li class="mt-6 mb-3">
+                            <span class="px-2 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">
+                                Statistical Pages
+                            </span>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="current/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-file-pdf mr-2"></i>
+                                Generate Report
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="check-payment/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-eye mr-2"></i>
+                                Monitoring & Evaluation
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="disbursement/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-tachometer mr-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li class="mt-6 mb-3">
+                            <span class="px-2 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">
+                                Account Management 
+                            </span>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="disbursement/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-cogs mr-2"></i>
+                                Admin Dashboard
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="disbursement/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-sign-out-alt mr-2"></i>
+                                Logout
+                            </a>
+                        </li>
+
                     </ul>
                 </nav>
             </div>
@@ -368,163 +419,162 @@
 
     <!-- DETAILS  -->
     <div class="details" id="details">
-      <a href="{% url 'continuing_projects' %}">
-        <i class="material-icons x" id="exit">close</i>
-      </a>
-      <a href="{% url 'continuing_projects' %}">
-        <h1 class="form-title">PROJECT DETAILS</h1>
-      </a>
-      <ul> {% for entry in all_entries %} <li class="entry-item" id="details-{{ entry.code }}" style="display: none;">
-          <div class="details-container">
-            <div class="main-user-info" id="main-detail">
-              <div class="user-input-box">
-                <p class="label">PPA</p>
-                <p id="fullName" class="user-text">{{ entry.ppa }}</p>
+        <a href="{% url 'continuing_projects' %}" class="block text-right">
+          <i class="material-icons x text-gray-600 hover:text-red-500" id="exit">close</i>
+        </a>
+        <a href="{% url 'continuing_projects' %}" class="block text-center">
+          <h1 class="form-title text-2xl font-bold text-gray-800 hover:text-blue-600">PROJECT DETAILS</h1>
+        </a>
+        <ul>
+          {% for entry in all_entries %}
+          <li class="entry-item hidden" id="details-{{ entry.code }}">
+            <div class="details-container bg-white shadow-lg rounded-lg p-6 mb-6">
+              <!-- Main User Info Section -->
+              <div class="main-user-info grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">PPA</p>
+                  <p id="fullName" class="user-text text-gray-800 font-semibold">{{ entry.ppa }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Implementing Unit</p>
+                  <p id="username" class="user-text text-gray-800 font-semibold">{{ entry.implementing_unit }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Location</p>
+                  <p id="email" class="user-text text-gray-800 font-semibold">{{ entry.location }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Appropriation</p>
+                  <p id="phoneNumber" class="user-text text-gray-800 font-semibold">₱{{ entry.appropriation|intcomma }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Remarks</p>
+                  <p id="password" class="user-text text-gray-800 font-semibold">{{ entry.remarks }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Start Date</p>
+                  <p id="confirmPassword" class="user-text text-gray-800 font-semibold">{{ entry.start_date }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">End Date</p>
+                  <p id="endDate" class="user-text text-gray-800 font-semibold">{{ entry.end_date }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Code</p>
+                  <p id="code" class="user-text text-gray-800 font-semibold">{{ entry.code }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Services</p>
+                  <p id="services" class="user-text text-gray-800 font-semibold">{{ entry.services }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Year</p>
+                  <p id="year" class="user-text text-gray-800 font-semibold">{{ entry.year }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Total Budget</p>
+                  <p id="totalBudget" class="user-text text-gray-800 font-semibold">₱{{ entry.overall_budget|intcomma }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Total Added Budget</p>
+                  <p id="totalSpent" class="user-text text-gray-800 font-semibold">₱{{ entry.added_budget|intcomma }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Remaining Balance</p>
+                  <p id="remainingBalance" class="user-text text-gray-800 font-semibold">₱{{ entry.remaining_total_balance|intcomma }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Remaining Obligation</p>
+                  <p id="remainingObligations" class="user-text text-gray-800 font-semibold">₱{{ entry.remaining_obligations|intcomma }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Total Obligation</p>
+                  <p id="totalObligations" class="user-text text-gray-800 font-semibold">₱{{ entry.total_obligations|intcomma }}</p>
+                </div>
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Total Spent</p>
+                  <p id="totalAddedBudget" class="user-text text-gray-800 font-semibold">₱{{ entry.total_disbursements|intcomma }}</p>
+                </div>
               </div>
-              <div class="user-input-box">
-                <p class="label">Implementing Unit</p>
-                <p id="username" class="user-text">{{ entry.implementing_unit }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Location</p>
-                <p id="email" class="user-text">{{ entry.location }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Appropriation</p>
-                <p id="phoneNumber" class="user-text">₱{{ entry.appropriation|intcomma }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Remarks</p>
-                <p id="password" class="user-text">{{ entry.remarks }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Start Date</p>
-                <p id="confirmPassword" class="user-text">{{ entry.start_date }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">End Date</p>
-                <p id="endDate" class="user-text">{{ entry.end_date }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Code</p>
-                <p id="code" class="user-text">{{ entry.code }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Services</p>
-                <p id="services" class="user-text">{{ entry.services }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Year</p>
-                <p id="year" class="user-text">{{ entry.year }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Total Budget</p>
-                <p id="totalBudget" class="user-text">₱{{ entry.overall_budget|intcomma }}</p>
-              </div>
-             
-              <div class="user-input-box">
-                <p class="label">Total Added Budget</p>
-                <p id="totalSpent" class="user-text">₱{{ entry.added_budget|intcomma }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Remaining Balance</p>
-                <p id="remainingBalance" class="user-text">₱{{ entry.remaining_total_balance|intcomma }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Remaining Obligation</p>
-                <p id="remainingObligations" class="user-text">₱{{ entry.remaining_obligations|intcomma }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Total Obligation</p>
-                <p id="totalObligations" class="user-text">₱{{ entry.total_obligations|intcomma }}</p>
-              </div>
-              <div class="user-input-box">
-                <p class="label">Total Spent</p>
-                <p id="totalAddedBudget" class="user-text">₱{{ entry.total_disbursements|intcomma }}</p>
-              </div>
-            </div>
-            
-            <div class="chart-container" data-entry-code="{{ entry.code }}" id="chart">
-              <div class="user-input-box">
-                <p class="label">Utilization Rate: </p>
-                <span class="utilizationRate">{{ entry.utilization_rate|floatformat:"-2" }} %</span>
-              </div>
-              <canvas class="pie-chart"></canvas>
-            </div>
-          </div>
-          <div class="tables-container">
-            <div class="table-box">
-              <span class="table-title">Added Budget</span>
-              <div class="table-wrapper">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Amount</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody> {% for budget in entry.budget_data %} <tr>
-                      <td>{{ budget.name|intcomma }}</td>
-                      <td>₱{{ budget.added_budget|intcomma }}</td>
-                      <td>{{ budget.date }}</td>
-                    </tr> {% endfor %} </tbody>
-                </table>
+              
+              <!-- Chart Section -->
+              <div class="chart-container mt-6" data-entry-code="{{ entry.code }}" id="chart">
+                <div class="user-input-box">
+                  <p class="label text-sm font-medium text-gray-500">Utilization Rate:</p>
+                  <span class="utilizationRate text-gray-800 font-semibold">{{ entry.utilization_rate|floatformat:"-2" }}%</span>
+                </div>
+                <canvas class="pie-chart"></canvas>
               </div>
             </div>
-            <div class="table-box">
-              <span class="table-title">Added Obligation</span>
-              <br>
-              <div class="table-wrapper">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Amount</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for obligation in entry.obligation %}
-                    <tr>
-                      <td class="border px-4 py-2">{{ obligation.name }}</td>
-                      <td class="border px-4 py-2">₱{{ obligation.obligation|intcomma }}</td>
-                      <td class="border px-4 py-2">{{ obligation.date }}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+      
+            <h1 class="form-title text-2xl font-bold text-gray-800 hover:text-blue-600">FINANCIAL DETAILS</h1>
+
+            <div class="mx-auto max-w-2xl">
+                <div class="space-y-6">
+                  
+                  <!-- Budget Section -->
+                  <div class="rounded-xl bg-white shadow-[0_10px_100px_10px_rgba(0,0,0,0.05)]">
+                    <div class="p-6 border-b">
+                      <h2 class="text-xl font-semibold text-gray-900">Added Budget</h2>
+                    </div>
+                    <div class="px-6 py-4">
+                      <ul class="space-y-4">
+                        {% for budget in entry.budget_data %}
+                        <li class="flex justify-between items-center text-lg text-gray-800 gap-4 border-b py-3">
+                          <span class="font-medium">{{ budget.name|intcomma }}</span>
+                          <span class="text-blue-600 font-semibold">₱{{ budget.added_budget|intcomma }}</span>
+                          <span class="text-sm text-gray-500">{{ budget.date }}</span>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+              
+                  <!-- Obligation Section -->
+                  <div class="rounded-xl bg-white shadow-[0_10px_100px_10px_rgba(0,0,0,0.05)]">
+                    <div class="p-6 border-b">
+                      <h2 class="text-xl font-semibold text-gray-900">Added Obligation</h2>
+                    </div>
+                    <div class="px-6 py-4">
+                      <ul class="space-y-4">
+                        {% for obligation in entry.obligation %}
+                        <li class="flex justify-between items-center text-lg text-gray-800 gap-4 border-b py-3">
+                          <span class="font-medium">{{ obligation.name }}</span>
+                          <span class="text-blue-600 font-semibold">₱{{ obligation.obligation|intcomma }}</span>
+                          <span class="text-sm text-gray-500">{{ obligation.date }}</span>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+              
+                  <!-- Disbursement Section -->
+                  <div class="rounded-xl bg-white shadow-[0_10px_100px_10px_rgba(0,0,0,0.05)]">
+                    <div class="p-6 border-b">
+                      <h2 class="text-xl font-semibold text-gray-900">Added Disbursement</h2>
+                    </div>
+                    <div class="px-6 py-4">
+                      <ul class="space-y-4">
+                        {% for disbursement in entry.disbursement %}
+                        <li class="flex justify-between items-center text-lg text-gray-800 gap-4 border-b py-3">
+                          <span class="font-medium">{{ disbursement.name }}</span>
+                          <span class="text-blue-600 font-semibold">₱{{ disbursement.disbursement|intcomma }}</span>
+                          <span class="text-sm text-gray-500">{{ disbursement.date }}</span>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+              
+                </div>
               </div>
-            </div>
-            <div class="table-box">
-              <span class="table-title">Added Disbursement</span>
-              <br>
-              <div class="table-wrapper">
-                <table class="min-w-full">
-                  <thead>
-                    <tr>
-                      <th class="px-4 py-2">Name</th>
-                      <th class="px-4 py-2">Amount</th>
-                      <th class="px-4 py-2">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for disbursement in entry.disbursement %}
-                    <tr>
-                      <td class="border px-4 py-2">{{ disbursement.name }}</td>
-                      <td class="border px-4 py-2">₱{{ disbursement.disbursement|intcomma }}</td>
-                      <td class="border px-4 py-2">{{ disbursement.date }}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
+              
+              
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      
     <!-- UPDATE -->
     <div class="details" id="update">
       <a href="{% url 'continuing_projects' %}"></a>
@@ -817,6 +867,7 @@
         // Show overlay and blur background
         document.getElementById('overlay').style.display = 'block';
         document.querySelector('main').style.filter = 'blur(10px)';
+        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
         
         // Hide all detail items first
         var details = document.getElementsByClassName('entry-item');
@@ -833,6 +884,28 @@
             console.error('Detail element not found for code:', code);
         }
       }
+
+      // Function to hide overlay and reset pointer events
+      function hideOverlay() {
+          document.getElementById('overlay').style.display = 'none';
+          document.querySelector('main').style.filter = 'none';
+          document.querySelector('main').classList.remove('pointer-events-none'); // Enable pointer events
+          var details = document.getElementById('details');
+          if (details) {
+              details.style.display = 'none'; // Hide details when overlay is hidden
+          }
+      }
+
+      // Update the overlay click event listener
+      document.getElementById('overlay').addEventListener('click', function(event) {
+          // Prevent clicks on the overlay from triggering any actions
+          hideOverlay();
+      });
+
+      // Prevent clicks on the details section from propagating
+      document.getElementById('details').addEventListener('click', function(event) {
+          event.stopPropagation(); // Prevent click events from bubbling up
+      });
     </script>
     <!-- Update js -->
     <script>
@@ -848,6 +921,7 @@
         document.getElementById('update').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
         document.querySelector('main').style.filter = 'blur(10px)';
+        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
       }
     </script>
     <script>
@@ -903,6 +977,7 @@
         document.getElementById('budget').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
         document.querySelector('main').style.filter = 'blur(10px)';
+        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
       }
     </script>
   
@@ -913,6 +988,7 @@
         document.getElementById('obligation').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
         document.querySelector('main').style.filter = 'blur(10px)';
+        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
       }
     </script>
    
@@ -923,6 +999,7 @@
         document.getElementById('delete').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
         document.querySelector('main').style.filter = 'blur(10px)';
+        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
       }
     </script>
    <script>
@@ -1012,6 +1089,7 @@
     {% endfor %}
 {% endif %}
 
+<script src="https://unpkg.com/hyperui@1.0.0/dist/js/hyperui.min.js" defer></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
@@ -1221,7 +1299,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
 <style>
 .overlay {
     display: none;
@@ -1338,6 +1415,11 @@ th, td {
     display: block !important;
     width: 100% !important;
     min-height: 65vh !important;
+}
+
+/* Add this CSS class */
+.pointer-events-none {
+    pointer-events: none; /* Prevents any mouse events */
 }
 </style>
 

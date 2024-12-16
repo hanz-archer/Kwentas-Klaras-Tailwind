@@ -140,6 +140,8 @@
       </div>
   </aside>
 
+
+  
     <main class="flex-1 transition-margin duration-300 ml-0 md:ml-64 min-h-screen bg-gray-100 dark:bg-gray-900{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <div class="p-2 sm:p-4 md:p-8 w-full max-w-[100vw] overflow-hidden">
         <!-- Mobile Header with Menu Button -->
@@ -232,22 +234,14 @@
       
       <div class="mb-4 sm:mb-6 flex-grow overflow-hidden">
         <div class="relative w-full overflow-x-auto" style="min-height: 65vh;">
-        <div class="overflow-x-auto"> <!-- Added overflow for horizontal scrolling -->
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-fixed">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50/50 dark:bg-gray-700/50 dark:text-gray-400">
               <tr>
-                <!-- PPA Column (Allow words to break and stack on smaller screens) -->
-                <th scope="col" class="px-6 py-3 w-full sm:w-1/2 break-words whitespace-normal">PPA</th>
-          
-                <!-- Remaining Obligations Column (Allow words to break and wrap when necessary) -->
-                <th scope="col" class="px-6 py-3 w-1/4 hidden md:table-cell break-words whitespace-normal min-w-[150px]">Remaining Obligations</th>
-          
-                <!-- Total Obligation Column (Allow words to break and wrap when necessary) -->
-                <th scope="col" class="px-6 py-3 w-1/4 break-words whitespace-normal min-w-[150px]">Total Obligation</th>
-          
+                <th scope="col" class="px-6 py-3 w-1/2 break-words whitespace-normal">PPA</th>
+                <th scope="col" class="px-6 py-3 w-1/4 hidden md:table-cell break-words whitespace-normal">Remaining Obligations</th>
+                <th scope="col" class="px-6 py-3 w-1/4 break-words whitespace-normal">Total Obligation</th>
                 {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
-                  <!-- Add Column (Hidden on small screens, visible on medium and larger screens) -->
-                  <th scope="col" class="px-6 py-3 w-1/4 hidden md:table-cell break-words whitespace-normal min-w-[150px]">Add</th>
+                  <th scope="col" class="px-6 py-3 w-1/4 hidden md:table-cell break-words whitespace-normal">Add</th>
                 {% endif %}
               </tr>
             </thead>
@@ -267,7 +261,7 @@
                         {% if entry.is_awarded %}
                           <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-2 mb-2" onclick="showDisbursementForm('{{ entry.code }}')">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
                             Disburse
                           </a>                      
@@ -281,7 +275,7 @@
               {% else %}
                 {% if page_obj %}
                   {% for entry in page_obj %}
-                    <tr style="cursor: pointer;">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-normal break-words dark:text-white" 
                           onclick="showDetails('{{ entry.code }}', event)">
                         {{ entry.ppa }}
@@ -297,7 +291,7 @@
                           {% if entry.is_awarded %}
                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-2 mb-2" onclick="showDisbursementForm('{{ entry.code }}')">
                               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                               </svg>
                               Disburse
                             </a>                      
@@ -316,9 +310,9 @@
               {% endif %}
             </tbody>
           </table>
-          
-      </div> <!-- End of overflow-x-auto -->
-      </section>
+        </div>
+      </div>
+      
     
       {% if not request.user.is_superuser %}
         <style>
@@ -779,6 +773,44 @@
       });
   });
 </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebar');
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+      const overlay = document.getElementById('overlay');
+  
+      function toggleSidebar() {
+          sidebar.classList.toggle('-translate-x-full');
+          if (!sidebar.classList.contains('-translate-x-full')) {
+              overlay.style.display = 'block';
+          } else {
+              overlay.style.display = 'none';
+          }
+      }
+  
+      sidebarToggle.addEventListener('click', toggleSidebar);
+      mobileSidebarToggle.addEventListener('click', toggleSidebar);
+  
+      // Close sidebar when clicking overlay
+      overlay.addEventListener('click', function() {
+          if (!sidebar.classList.contains('-translate-x-full')) {
+              toggleSidebar();
+          }
+      });
+  
+      // Close sidebar when screen is resized to larger size
+      window.addEventListener('resize', function() {
+          if (window.innerWidth >= 768) { // md breakpoint
+              sidebar.classList.remove('-translate-x-full');
+              overlay.style.display = 'none';
+          } else {
+              sidebar.classList.add('-translate-x-full');
+          }
+      });
+  });
+  </script>
 
 
 

@@ -240,16 +240,16 @@
                     <!-- Table Section - Made responsive -->
                     <div class="mb-4 sm:mb-6 flex-grow overflow-hidden">
                         <div class="relative w-full overflow-x-auto" style="min-height: 65vh;">
-                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-auto">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-fixed">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50/50 dark:bg-gray-700/50 dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">PPA</th>
-                                        <th scope="col" class="px-6 py-3">Implementing Unit</th>
-                                        <th scope="col" class="px-6 py-3">Code</th>
-                                        <th scope="col" class="px-6 py-3">Remarks</th>
+                                        <th scope="col" class="px-6 py-3 w-1/2 break-words whitespace-normal">PPA</th>
+                                        <th scope="col" class="px-6 py-3 w-1/4 hidden md:table-cell break-words whitespace-normal">Implementing Unit</th>
+                                        <th scope="col" class="px-6 py-3 w-1/4 break-words whitespace-normal">Code</th>
+                                        <th scope="col" class="px-6 py-3 w-1/4 break-words whitespace-normal">Remarks</th>
                                         {% if request.user.is_superuser %}
-                                            <th scope="col" class="px-6 py-3">Add</th>
-                                            <th scope="col" class="px-6 py-3">Action</th>
+                                            <th scope="col" class="px-6 py-3 w-1/4 break-words whitespace-normal">Add</th>
+                                            <th scope="col" class="px-6 py-3 w-1/4 break-words whitespace-normal">Action</th>
                                         {% endif %}
                                     </tr>
                                 </thead>
@@ -257,7 +257,7 @@
                                     {% if matched_entries_below_2024 %}
                                         {% for entry in matched_entries_below_2024 %}
                                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" 
+                                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-normal break-words dark:text-white" 
                                                     onclick="showDetails('{{ entry.code }}', event)">
                                                     {{ entry.ppa }}
                                                 </th>

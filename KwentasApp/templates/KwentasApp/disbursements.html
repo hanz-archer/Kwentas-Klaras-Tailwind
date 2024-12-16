@@ -1,4 +1,4 @@
-{% load humanize %} {% load static %}
+{% load humanize %} {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en"> {% csrf_token %} <head>
     <meta charset="UTF-8">
@@ -11,57 +11,259 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/continuing.css' %}">
+    {% tailwind_css %}
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
-    <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
-      <section class="table__header">
-        <h1>Disbursements</h1>
-        <div class="sorting-options">
-          <form method="GET" action="">
-              <select name="sort" id="sort" onchange="this.form.submit()">
-                  <option value="" {% if not sort_option %}selected{% endif %}>Sort by</option>
-                  <option value="recent" {% if sort_option == 'recent' %}selected{% endif %}>Recently Added</option>
-                  <option value="oldest" {% if sort_option == 'oldest' %}selected{% endif %}>Oldest Added</option>
-              </select>
-              <noscript><button type="submit">Sort</button></noscript> <!-- For non-JS environments -->
-          </form>
-      </div>     
-      <div class="input-group">
-        <form method="GET" action="{% url 'search_projects' 'disbursements'%}">
-            <input type="text" id="search-input" name="query" placeholder="Search Current Projects...">
-        </form>
-        <div id="search-results"></div>
-    </div>
-        <div class="export__file">
-          <button type="submit" class="export__file-btn">Search</button>
-          </form>
+
+    <div class="flex h-screen">
+    <aside class="fixed inset-y-0 left-0 z-50 w-64 transition-transform duration-300 transform md:translate-x-0 -translate-x-full bg-white dark:bg-gray-800 shadow-md" id="sidebar">
+      <!-- Sidebar Toggle Button for Mobile -->
+      <button id="sidebarToggle" class="md:hidden absolute right-0 top-0 mt-4 -mr-10 bg-gray-800 text-white p-2 rounded-r">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+      </button>
+
+      <div class="p-4 h-full overflow-y-auto">
+          <div class="flex items-center">
+              <img src="{% static 'KwentasApp/img/logobrowser.jpg' %}" alt="Logo" class="h-8 w-auto mb-1">
+              <span class="ml-2 text-gray-700 dark:text-gray-300">Kwentas Klaras Digital PMIS v1.0</span>
+          </div>
+          <nav class="mt-10">
+              <ul class="space-y-4"> <!-- Added space-y-4 to the <ul> element -->
+                  <!-- Main Navigation -->
+                  <li class="mb-2">
+                      <a href="{% url 'homepage' %}" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-home mr-2"></i>
+                          Homepage
+                      </a>
+                  </li>
+                  <li class="mb-2">
+                      <a href="{% url 'continuing_projects' %}" class="flex items-center p-2 text-blue-600 dark:text-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                          <i class="fas fa-project-diagram mr-2"></i>
+                          Continuing Projects
+                      </a>
+                  </li>
+
+                  <!-- Relevant Pages Section -->
+                  <li class="mt-6 mb-3">
+                      <span class="px-2 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">
+                          Relevant Pages
+                      </span>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="current/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-clock mr-2"></i>
+                          Current
+                      </a>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="check-payment/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-money-check mr-2"></i>
+                          Check Payment
+                      </a>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="disbursement/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-hand-holding-usd mr-2"></i>
+                          Disbursement
+                      </a>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="procurements/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-shopping-cart mr-2"></i>
+                          Procurements
+                      </a>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="obligations/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-file-contract mr-2"></i>
+                          Obligations
+                      </a>
+                  </li>
+
+                  <li class="mt-6 mb-3">
+                      <span class="px-2 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">
+                          Statistical Pages
+                      </span>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="current/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-file-pdf mr-2"></i>
+                          Generate Report
+                      </a>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="check-payment/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-eye mr-2"></i>
+                          Monitoring & Evaluation
+                      </a>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="disbursement/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-tachometer mr-2"></i>
+                          Dashboard
+                      </a>
+                  </li>
+
+                  <li class="mt-6 mb-3">
+                      <span class="px-2 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">
+                          Account Management 
+                      </span>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="disbursement/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-cogs mr-2"></i>
+                          Admin Dashboard
+                      </a>
+                  </li>
+
+                  <li class="mb-2">
+                      <a href="disbursement/" class="flex items-center p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                          <i class="fas fa-sign-out-alt mr-2"></i>
+                          Logout
+                      </a>
+                  </li>
+
+              </ul>
+          </nav>
+      </div>
+  </aside>
+
+    <main class="flex-1 transition-margin duration-300 ml-0 md:ml-64 min-h-screen bg-gray-100 dark:bg-gray-900{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
+      <div class="p-2 sm:p-4 md:p-8 w-full max-w-[100vw] overflow-hidden">
+        <!-- Mobile Header with Menu Button -->
+        <div class="md:hidden mb-4 flex items-center">
+            <button id="mobileSidebarToggle" class="p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <h1 class="ml-2 text-xl font-semibold">Disbursements</h1>
         </div>
-      </section>
-      <section class="table__body">
-        <table class="table">
-          <thead>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4"> <!-- Grid container -->
+          <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700 p-4"> <!-- Adjusted padding -->
+              <div class="flex items-center justify-between">
+                  <div>
+                      <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500">
+                          Continuing Projects
+                      </p>
+                      <h2 class="text-xl font-medium text-gray-800 dark:text-neutral-200">
+                        {% if matched_entries_below_2024 %}
+                        {{ matched_entries_below_2024|length }} Projects
+                    {% elif page_obj %}
+                        {{ page_obj|length }} Projects  
+                    {% else %}
+                        0 Projects
+                    {% endif %}
+                    under 20% Local Development Fund
+                      </h2>
+                  </div>
+              </div>
+          </div>
+      
+          <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700 p-4"> <!-- Adjusted padding -->
+              <div class="flex items-center justify-between">
+                  <div>
+                      <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500">
+                          Project Remarks
+                      </p>
+                      <h2 class="text-xl font-medium text-gray-800 dark:text-neutral-200">
+                          {{ awarded_count }} Projects Awarded Already
+                      </h2>
+                  </div>
+                  <div class="hs-tooltip">
+                  </div>
+              </div>
+          </div>
+      </div>
+
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg mt-3 p-3 sm:p-4 md:p-6 flex flex-col justify-between min-h-[90vh] max-w-[your-desired-width] w-full">
+          <div class="mb-4">
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">Disbursements</h1>
+            <div class="flex items-center gap-4">
+                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Manage and monitor ongoing project details</p>
+            </div>
+          </div>
+
+          <div class="mb-4 sm:mb-6 grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4">
+            <!-- Sort -->
+            <div class="relative w-full">
+                <form method="GET" action="" class="w-full">
+                    <select name="sort" id="sort" onchange="this.form.submit()" 
+                            class="w-full px-4 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="" {% if not sort_option %}selected{% endif %}>Sort by</option>
+                        <option value="recent" {% if sort_option == 'recent' %}selected{% endif %}>Recently Added</option>
+                        <option value="oldest" {% if sort_option == 'oldest' %}selected{% endif %}>Oldest Added</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="relative col-span-1 md:col-span-2 w-full">
+              <form method="GET" action="{% url 'search_projects' 'continuing' %}" class="w-full">
+                  <div class="relative">
+                      <input type="text" 
+                             id="search-input" 
+                             name="query" 
+                             class="w-full pl-10 pr-4 py-2.5 text-gray-700 bg-white border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white shadow-sm hover:border-gray-400 transition-colors duration-200"
+                             placeholder="Search Continuing Projects...">
+                      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                          </svg>
+                      </div>
+                  </div>
+              </form>
+              <div id="search-results"></div>
+          </div>
+      </div>
+
+      
+      <div class="mb-4 sm:mb-6 flex-grow overflow-hidden">
+        <div class="relative w-full overflow-x-auto" style="min-height: 65vh;">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-fixed">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50/50 dark:bg-gray-700/50 dark:text-gray-400">
             <tr>
-              <th class="left-align">PPA</th>
-              <th>Remaining Obligations</th>
-              <th>Total Obligation</th>
+              <th scope="col" class="px-6 py-3 w-1/3">PPA</th>
+              <th scope="col" class="px-6 py-3 w-1/3 hidden md:table-cell">Remaining Obligations</th>
+              <th scope="col" class="px-6 py-3 w-1/3">Total Obligation</th>
               {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
-                <th>Add</th>
+                <th scope="col" class="px-6 py-3 w-1/3 hidden md:table-cell">Add</th>
               {% endif %}
             </tr>
           </thead>
-          <tbody> 
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
             {% if matched_entries %}
             {% for entry in matched_entries %}
-                <tr style="cursor: pointer;">
-                  <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                  <td class="code" onclick="showDetails('{{ entry.code }}')">₱{{ entry.remaining_obligations|intcomma }}</td>
-                  <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.total_obligations|intcomma }}</td>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" 
+                      onclick="showDetails('{{ entry.code }}', event)">
+                    {{ entry.ppa }}
+                  </th>
+                  <td class="px-6 py-4 hidden md:table-cell" onclick="showDetails('{{ entry.code }}')">
+                    {{ entry.implementing_unit }}
+                  </td>
                   {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
-                    <td>
+                    <td class="hidden md:table-cell">
                       {% if entry.is_awarded %}
-                        <p class="status obligation" onclick="showAddDisbursementForm('{{ entry.code }}')">Disburse</p>
-                      {% else %}
+                      <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-2 mb-2" onclick="showDisbursementForm('{{ entry.code }}')">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Disburse
+                    </a>                      
+                    {% else %}
                         Project needs to be Awarded
                       {% endif %}
                     </td>
@@ -72,14 +274,26 @@
             {% if page_obj %}
               {% for entry in page_obj %}
                 <tr style="cursor: pointer;">
-                  <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                  <td class="code" onclick="showDetails('{{ entry.code }}')">₱{{ entry.remaining_obligations|intcomma }}</td>
-                  <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.total_obligations|intcomma }}</td>
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" 
+                      onclick="showDetails('{{ entry.code }}', event)">
+                    {{ entry.ppa }}
+                  </th>
+                  <td class="px-6 py-4 hidden md:table-cell" onclick="showDetails('{{ entry.code }}')">
+                    ₱ {{ entry.remaining_obligations|intcomma }}
+                  </td>
+                  <td class="px-6 py-4" onclick="showDetails('{{ entry.code }}')">
+                    ₱ {{ entry.total_obligations|intcomma }}
+                  </td>
                   {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
-                    <td>
+                    <td class="hidden md:table-cell">
                       {% if entry.is_awarded %}
-                        <p class="status obligation" onclick="showAddDisbursementForm('{{ entry.code }}')">Disburse</p>
-                      {% else %}
+                      <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-2 mb-2" onclick="showDisbursementForm('{{ entry.code }}')">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Disburse
+                    </a>                      
+                    {% else %}
                         Project needs to be Awarded
                       {% endif %}
                     </td>
@@ -108,35 +322,49 @@
         </style>
       {% endif %}
     
-      <div class="pagination">
-        <ul class="pagination-list">
-          {% if page_obj.has_previous %}
-            <li class="pagination-item"><a href="{% url 'disbursements' %}?{% if query %}query={{ query }}&{% endif %}page=1">&laquo; First</a></li>
-            <li class="pagination-item"><a href="{% url 'disbursements' %}?{% if query %}query={{ query }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a></li>
-          {% else %}
-            <li class="pagination-item disabled"><span>&laquo; First</span></li>
-            <li class="pagination-item disabled"><span>Previous</span></li>
-          {% endif %}
-      
-          <li class="pagination-item active"><span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
-      
-          {% if page_obj.has_next %}
-            <li class="pagination-item"><a href="{% url 'disbursements' %}?{% if query %}query={{ query }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a></li>
-            <li class="pagination-item"><a href="{% url 'disbursements' %}?{% if query %}query={{ query }}&{% endif %}page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
-          {% else %}
-            <li class="pagination-item disabled"><span>Next</span></li>
-            <li class="pagination-item disabled"><span>Last &raquo;</span></li>
-          {% endif %}
-        </ul>
-      </div>
-      
-    
-      <div class="back">
-        <a href="{% url 'homepage' %}">
-          <button class="back-btn">Back</button>
-        </a>
-      </div>
+      <div class="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <!-- Back Button -->
+        <div class="w-full sm:w-auto order-2 sm:order-1">
+            <a href="{% url 'homepage' %}" 
+               class="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:bg-gray-600">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Homepage
+            </a>
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav class="w-full sm:w-auto order-1 sm:order-2">
+            <ul class="flex items-center justify-center sm:justify-end -space-x-px">
+                {% if page_obj.has_previous %}
+                    <li>
+                        <a href="?page=1" class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">First</a>
+                    </li>
+                    <li>
+                        <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                    </li>
+                {% endif %}
+
+                <li>
+                    <span class="px-3 py-2 leading-tight text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li>
+                        <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    </li>
+                    <li>
+                        <a href="?page={{ page_obj.paginator.num_pages }}" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Last</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
     </main>
+    </div>
     
     <!-- DETAILS  -->
     <div class="details" id="details">
@@ -331,12 +559,6 @@
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
     <!-- PIE CHART JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  
-    
-    
-  
-  
     <script>  
       //INPUT MASKING 
       document.getElementById('disbursement-input').addEventListener('input', function (e) {

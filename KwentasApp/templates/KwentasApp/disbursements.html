@@ -232,82 +232,92 @@
       
       <div class="mb-4 sm:mb-6 flex-grow overflow-hidden">
         <div class="relative w-full overflow-x-auto" style="min-height: 65vh;">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-fixed">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50/50 dark:bg-gray-700/50 dark:text-gray-400">
-            <tr>
-              <th scope="col" class="px-6 py-3 w-1/3">PPA</th>
-              <th scope="col" class="px-6 py-3 w-1/3 hidden md:table-cell">Remaining Obligations</th>
-              <th scope="col" class="px-6 py-3 w-1/3">Total Obligation</th>
-              {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
-                <th scope="col" class="px-6 py-3 w-1/3 hidden md:table-cell">Add</th>
-              {% endif %}
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-            {% if matched_entries %}
-            {% for entry in matched_entries %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" 
-                      onclick="showDetails('{{ entry.code }}', event)">
-                    {{ entry.ppa }}
-                  </th>
-                  <td class="px-6 py-4 hidden md:table-cell" onclick="showDetails('{{ entry.code }}')">
-                    {{ entry.implementing_unit }}
-                  </td>
-                  {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
-                    <td class="hidden md:table-cell">
-                      {% if entry.is_awarded %}
-                      <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-2 mb-2" onclick="showDisbursementForm('{{ entry.code }}')">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
-                        Disburse
-                    </a>                      
-                    {% else %}
-                        Project needs to be Awarded
-                      {% endif %}
-                    </td>
-                  {% endif %}
-                </tr>
-              {% endfor %}
-        {% else %}
-            {% if page_obj %}
-              {% for entry in page_obj %}
-                <tr style="cursor: pointer;">
-                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" 
-                      onclick="showDetails('{{ entry.code }}', event)">
-                    {{ entry.ppa }}
-                  </th>
-                  <td class="px-6 py-4 hidden md:table-cell" onclick="showDetails('{{ entry.code }}')">
-                    ₱ {{ entry.remaining_obligations|intcomma }}
-                  </td>
-                  <td class="px-6 py-4" onclick="showDetails('{{ entry.code }}')">
-                    ₱ {{ entry.total_obligations|intcomma }}
-                  </td>
-                  {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
-                    <td class="hidden md:table-cell">
-                      {% if entry.is_awarded %}
-                      <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-2 mb-2" onclick="showDisbursementForm('{{ entry.code }}')">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
-                        Disburse
-                    </a>                      
-                    {% else %}
-                        Project needs to be Awarded
-                      {% endif %}
-                    </td>
-                  {% endif %}
-                </tr>
-              {% endfor %}
-            {% else %}
+        <div class="overflow-x-auto"> <!-- Added overflow for horizontal scrolling -->
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-fixed">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50/50 dark:bg-gray-700/50 dark:text-gray-400">
               <tr>
-                <td colspan="4">No projects found.</td>
+                <!-- PPA Column (Allow words to break and stack on smaller screens) -->
+                <th scope="col" class="px-6 py-3 w-full sm:w-1/2 break-words whitespace-normal">PPA</th>
+          
+                <!-- Remaining Obligations Column (Allow words to break and wrap when necessary) -->
+                <th scope="col" class="px-6 py-3 w-1/4 hidden md:table-cell break-words whitespace-normal min-w-[150px]">Remaining Obligations</th>
+          
+                <!-- Total Obligation Column (Allow words to break and wrap when necessary) -->
+                <th scope="col" class="px-6 py-3 w-1/4 break-words whitespace-normal min-w-[150px]">Total Obligation</th>
+          
+                {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
+                  <!-- Add Column (Hidden on small screens, visible on medium and larger screens) -->
+                  <th scope="col" class="px-6 py-3 w-1/4 hidden md:table-cell break-words whitespace-normal min-w-[150px]">Add</th>
+                {% endif %}
               </tr>
-            {% endif %}
-            {% endif %}
-          </tbody>
-        </table>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+              {% if matched_entries %}
+                {% for entry in matched_entries %}
+                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-normal break-words dark:text-white" 
+                        onclick="showDetails('{{ entry.code }}', event)">
+                      {{ entry.ppa }}
+                    </th>
+                    <td class="px-6 py-4 hidden md:table-cell" onclick="showDetails('{{ entry.code }}')">
+                      {{ entry.implementing_unit }}
+                    </td>
+                    {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
+                      <td class="hidden md:table-cell">
+                        {% if entry.is_awarded %}
+                          <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-2 mb-2" onclick="showDisbursementForm('{{ entry.code }}')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                            Disburse
+                          </a>                      
+                        {% else %}
+                          Project needs to be Awarded
+                        {% endif %}
+                      </td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+              {% else %}
+                {% if page_obj %}
+                  {% for entry in page_obj %}
+                    <tr style="cursor: pointer;">
+                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-normal break-words dark:text-white" 
+                          onclick="showDetails('{{ entry.code }}', event)">
+                        {{ entry.ppa }}
+                      </th>
+                      <td class="px-6 py-4 hidden md:table-cell" onclick="showDetails('{{ entry.code }}')">
+                        ₱ {{ entry.remaining_obligations|intcomma }}
+                      </td>
+                      <td class="px-6 py-4" onclick="showDetails('{{ entry.code }}')">
+                        ₱ {{ entry.total_obligations|intcomma }}
+                      </td>
+                      {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
+                        <td class="hidden md:table-cell">
+                          {% if entry.is_awarded %}
+                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-2 mb-2" onclick="showDisbursementForm('{{ entry.code }}')">
+                              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                              </svg>
+                              Disburse
+                            </a>                      
+                          {% else %}
+                            Project needs to be Awarded
+                          {% endif %}
+                        </td>
+                      {% endif %}
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td colspan="4">No projects found.</td>
+                  </tr>
+                {% endif %}
+              {% endif %}
+            </tbody>
+          </table>
+          
+      </div> <!-- End of overflow-x-auto -->
       </section>
     
       {% if not request.user.is_superuser %}

@@ -285,6 +285,8 @@ def indexPage(request):
 def continuing_projects(request):
     # Retrieve project entries for continuing projects
     entries_below_2024, _, all_entries = get_project_entries()
+
+    awarded_count = sum(1 for entry in entries_below_2024 if entry['remarks'] == "Awarded Already")
     
     # Get sorting option from query parameters; do nothing if not specified
     sort_option = request.GET.get('sort')
@@ -304,7 +306,8 @@ def continuing_projects(request):
     return render(request, 'KwentasApp/continuing.html', {
         'page_obj': page_obj,
         'all_entries': all_entries,
-        'sort_option': sort_option  # Pass current sort option to the template
+        'sort_option': sort_option,  # Pass current sort option to the template
+        'awarded_count': awarded_count # Pass the count of awarded projects
     })
 
 
@@ -312,6 +315,7 @@ def continuing_projects(request):
 def current_projects(request):
     # Retrieve project entries
     entries_below_2024, entries_2024_and_above, all_entries = get_project_entries()
+    awarded_count = sum(1 for entry in entries_2024_and_above if entry['remarks'] == "Awarded Already")
     
     # Get sorting option from query parameters; do nothing if not specified
     sort_option = request.GET.get('sort')
@@ -330,7 +334,8 @@ def current_projects(request):
     return render(request, 'KwentasApp/current.html', {
         'page_obj': page_obj,
         'all_entries': all_entries,
-        'sort_option': sort_option  # Pass current sort option to the template
+        'sort_option': sort_option, # Pass current sort option to the template
+        'awarded_count': awarded_count # Pass the count of awarded projects
     })
 from django.core.paginator import Paginator
 from django.shortcuts import render

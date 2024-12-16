@@ -156,25 +156,50 @@
                     <h1 class="ml-2 text-xl font-semibold">Current Projects</h1>
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4"> <!-- Grid container -->
+                    <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700 p-4"> <!-- Adjusted padding -->
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500">
+                                    Continuing Projects
+                                </p>
+                                <h2 class="text-xl font-medium text-gray-800 dark:text-neutral-200">
+                                  {% if matched_entries_2024_and_above %}
+                                  {{ matched_entries_2024_and_above|length }} Projects
+                              {% elif page_obj %}
+                                  {{ page_obj|length }} Projects  
+                              {% else %}
+                                  0 Projects
+                              {% endif %}
+                              under 20% Local Development Fund
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700 p-4"> <!-- Adjusted padding -->
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500">
+                                    Project Remarks
+                                </p>
+                                <h2 class="text-xl font-medium text-gray-800 dark:text-neutral-200">
+                                    {{ awarded_count }} Projects Awarded Already
+                                </h2>
+                            </div>
+                            <div class="hs-tooltip">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Card Container - Made responsive -->
-                <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-3 sm:p-4 md:p-6 flex flex-col justify-between min-h-[90vh] w-full">
+                <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg mt-3 p-3 sm:p-4 md:p-6 flex flex-col justify-between min-h-[90vh] w-full">
                     <!-- Page Header -->
                     <div class="mb-4">
                         <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">Current Projects</h1>
                         <div class="flex items-center gap-4">
                             <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Manage and monitor ongoing project details</p>
-                            <span class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                                </svg>
-                                {% if matched_entries_2024_and_above %}
-                                    {{ matched_entries_2024_and_above|length }} Projects
-                                {% elif page_obj %}
-                                    {{ page_obj|length }} Projects
-                                {% else %}
-                                    0 Projects
-                                {% endif %}
-                            </span>
                         </div>
                     </div>
 

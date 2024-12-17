@@ -15,131 +15,215 @@
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
-    <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
-      <section class="table__header">
-        <h1>Procurements</h1>
-        <div class="sorting-options">
-            <form method="GET" action="">
-                <select name="sort" id="sort" onchange="this.form.submit()">
+
+    <div class="flex h-screen">
+
+    {% include 'KwentasApp/partials/aside.html' %}
+
+    <main class="flex-1 transition-margin duration-300 ml-0 md:ml-64 min-h-screen bg-gray-100 dark:bg-gray-900">
+
+      <div class="p-2 sm:p-4 md:p-8 w-full max-w-[100vw] overflow-hidden">
+        <!-- Mobile Header with Menu Button -->
+        <div class="md:hidden mb-4 flex items-center">
+            <button id="mobileSidebarToggle" class="p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <h1 class="ml-2 text-xl font-semibold">Current Projects</h1>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4"> <!-- Grid container -->
+          <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700 p-4"> <!-- Adjusted padding -->
+              <div class="flex items-center justify-between">
+                  <div>
+                      <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500">
+                          Continuing Projects
+                      </p>
+                      <h2 class="text-xl font-medium text-gray-800 dark:text-neutral-200">
+                        {% if matched_entries_2024_and_above %}
+                        {{ matched_entries_2024_and_above|length }} Projects
+                    {% elif page_obj %}
+                        {{ page_obj|length }} Projects  
+                    {% else %}
+                        0 Projects
+                    {% endif %}
+                    under 20% Local Development Fund
+                      </h2>
+                  </div>
+              </div>
+          </div>
+      
+          <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700 p-4"> <!-- Adjusted padding -->
+              <div class="flex items-center justify-between">
+                  <div>
+                      <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500">
+                          Project Remarks
+                      </p>
+                      <h2 class="text-xl font-medium text-gray-800 dark:text-neutral-200">
+                          {{ awarded_count }} Projects Awarded Already
+                      </h2>
+                  </div>
+                  <div class="hs-tooltip">
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg mt-3 p-3 sm:p-4 md:p-6 flex flex-col justify-between min-h-[90vh] w-full">
+
+        <div class="mb-4">
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">Procurements</h1>
+          <div class="flex items-center gap-4">
+              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Manage and monitor ongoing project details</p>
+          </div>
+      </div>
+
+
+      <div class="mb-4 sm:mb-6 grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4">
+        <!-- Sort -->
+        <div class="relative w-full">
+            <form method="GET" action="" class="w-full">
+                <select name="sort" id="sort" onchange="this.form.submit()" 
+                        class="w-full px-4 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     <option value="" {% if not sort_option %}selected{% endif %}>Sort by</option>
                     <option value="recent" {% if sort_option == 'recent' %}selected{% endif %}>Recently Added</option>
                     <option value="oldest" {% if sort_option == 'oldest' %}selected{% endif %}>Oldest Added</option>
                 </select>
-                <noscript><button type="submit">Sort</button></noscript> <!-- For non-JS environments -->
             </form>
-        </div>      
-    
-        <div class="input-group">
-            <form method="GET" action="{% url 'search_projects' 'procurements' %}">
-                <input type="text" id="search-input" name="query" placeholder="Search Procurements...">
+        </div>
+
+        <!-- Search -->
+        <div class="relative col-span-1 md:col-span-2 w-full">
+            <form method="GET" action="{% url 'search_projects' 'continuing' %}" class="w-full">
+                <div class="relative">
+                    <input type="text" 
+                           id="search-input" 
+                           name="query" 
+                           class="w-full pl-10 pr-4 py-2.5 text-gray-700 bg-white border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white shadow-sm hover:border-gray-400 transition-colors duration-200"
+                           placeholder="Search Continuing Projects...">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </div>
             </form>
             <div id="search-results"></div>
         </div>
-    
-        <div class="export__file">
-            <button type="submit" class="export__file-btn">Search</button>
-        </div>
-    </section>
-    
-      <section class="table__body">
-        <table class="table">
-            <thead>
-                <tr>
-                  <th class="left-align">PPA</th>
-                    <th>Implementing Unit</th>
-                    <th>Code</th>
-                    <th>Remarks</th>
-                    {% if request.user.is_superuser or request.user.department == 'BAC Office' %}
-                       
-                        <th>Action</th>
-                    {% endif %}
-                </tr>
-            </thead>
-            <tbody>
-              {% if matched_entries %}
-              {% for entry in matched_entries %}
-              <tr style="cursor: pointer;">
-                  <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                  <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                  <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.remarks }}</td>
-                  {% if request.user.is_superuser or request.user.department == 'BAC Office' %}
-                     
-                      <td>
-                          <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
-                         
-                      </td>
+    </div>
+
+    <div class="mb-4 sm:mb-6 flex-grow overflow-hidden">
+      <div class="relative w-full max-w-[200%] lg:max-w-[1200px] overflow-x-auto" style="min-height: 65vh;">
+          <table class="min-w-full table-auto border-separate border-spacing-0 w-full">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50/50 dark:bg-gray-700/50 dark:text-gray-400">
+                  <tr>
+                      <!-- Increased width for PPA with responsive design -->
+                      <th class="px-8 py-3 w-1/2 text-left font-semibold text-gray-700 sm:w-[400px] md:w-[500px] lg:w-[600px]">PPA</th>
+                      <!-- No hiding for Implementing Unit, Code, and Remarks -->
+                      <th class="px-8 py-3 text-left font-semibold text-gray-700">Implementing Unit</th>
+                      <th class="px-8 py-3 text-left font-semibold text-gray-700">Code</th>
+                      <th class="px-8 py-3 text-left font-semibold text-gray-700">Remarks</th>
+                      {% if request.user.is_superuser or request.user.department == 'BAC Office' %}
+                          <!-- Action column -->
+                          <th class="px-8 py-3 text-left font-semibold text-gray-700">Action</th>
+                      {% endif %}
+                  </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                  {% if matched_entries %}
+                      {% for entry in matched_entries %}
+                          <tr class="hover:bg-gray-100 cursor-pointer">
+                              <!-- Increased width for PPA with responsive design -->
+                              <td class="px-8 py-4 w-[300px] sm:w-[400px] md:w-[500px] lg:w-[600px]">{{ entry.ppa }}</td>
+                              <td class="px-8 py-4">{{ entry.implementing_unit }}</td>
+                              <td class="px-8 py-4">{{ entry.code }}</td>
+                              <td class="px-8 py-4">{{ entry.remarks }}</td>
+                              {% if request.user.is_superuser or request.user.department == 'BAC Office' %}
+                                  <td class="px-8 py-4">
+                                      <p class="text-blue-500 hover:text-blue-700 cursor-pointer" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
+                                  </td>
+                              {% endif %}
+                          </tr>
+                      {% endfor %}
+                  {% else %}
+                      {% if page_obj %}
+                          {% for entry in page_obj %}
+                              <tr class="hover:bg-gray-100 cursor-pointer">
+                                  <td class="px-8 py-4 w-[300px] sm:w-[400px] md:w-[500px] lg:w-[600px]">{{ entry.ppa }}</td>
+                                  <td class="px-8 py-4">{{ entry.implementing_unit }}</td>
+                                  <td class="px-8 py-4">{{ entry.code }}</td>
+                                  <td class="px-8 py-4">{{ entry.remarks }}</td>
+                                  {% if request.user.is_superuser or request.user.department == 'BAC Office' %}
+                                      <td class="px-8 py-4">
+                                          <p class="text-blue-500 hover:text-blue-700 cursor-pointer" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
+                                      </td>
+                                  {% endif %}
+                              </tr>
+                          {% endfor %}
+                      {% else %}
+                          <tr>
+                              <td colspan="5" class="px-8 py-4 text-center text-gray-500">No projects found.</td>
+                          </tr>
+                      {% endif %}
                   {% endif %}
-              </tr>
-          {% endfor %}
-          {% else %}
+              </tbody>
+          </table>
+      </div>
+    </div>
+    
+    
+  
+  
+  
+  
+  
+  <div class="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <!-- Back Button -->
+    <div class="w-full sm:w-auto order-2 sm:order-1">
+        <a href="{% url 'homepage' %}" 
+           class="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:bg-gray-600">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Homepage
+        </a>
+    </div>
 
-          {% if page_obj %}
-                {% for entry in page_obj %}
-                    <tr style="cursor: pointer;">
-                        <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                        <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                        <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.remarks }}</td>
-                        {% if request.user.is_superuser %}
-                            
-                            <td>
-                                <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
-                               
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
+    <!-- Pagination Controls -->
+    <nav class="w-full sm:w-auto order-1 sm:order-2">
+        <ul class="flex items-center justify-center sm:justify-end -space-x-px">
+            {% if page_obj.has_previous %}
+                <li>
+                    <a href="?page=1" class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">First</a>
+                </li>
+                <li>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                </li>
+            {% endif %}
 
-                {% else %}
-                <tr>
-                  <td colspan="6">No projects found.</td>
-                </tr>
-              {% endif %}
-                {% endif %}
-            </tbody>
-        </table>
-    </section>
-    {% if not request.user.is_superuser %}
-    <style>
-      .left-align {
-          text-align: left !important;
-      }
-      .non-superuser .table th:nth-child(5), 
-      .non-superuser .table th:nth-child(6),
-      .non-superuser .table td:nth-child(5), 
-      .non-superuser .table td:nth-child(6) {
-          display: none;
-      }
-  </style>
-{% endif %}
-  <div class="back">
-      <a href="{% url 'homepage' %}">
-          <button class="back-btn">Back</button>
-      </a>
-  </div>
-  <div class="pagination">
-      <ul class="pagination-list">
-          {% if page_obj.has_previous %}
-              <li class="pagination-item"><a href="?page=1">&laquo; First</a></li>
-              <li class="pagination-item"><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
-          {% else %}
-              <li class="pagination-item disabled"><span>&laquo; First</span></li>
-              <li class="pagination-item disabled"><span>Previous</span></li>
-          {% endif %}
-          
-          <li class="pagination-item active"><span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
-          
-          {% if page_obj.has_next %}
-              <li class="pagination-item"><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
-              <li class="pagination-item"><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
-          {% else %}
-              <li class="pagination-item disabled"><span>Next</span></li>
-              <li class="pagination-item disabled"><span>Last &raquo;</span></li>
-          {% endif %}
-      </ul>
-  </div>
-</main>
+            <li>
+                <span class="px-3 py-2 leading-tight text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                </li>
+                <li>
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Last</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+    </div>
+    </main>
+    </div>
+
+
     <!-- DETAILS  -->
     <div class="details" id="details">
       <a href="{% url 'procurements' %}">

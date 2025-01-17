@@ -582,212 +582,174 @@
       </form>
       {% endfor %}
   </div>
-    <!-- BUDGET -->
-    <div class="details" id="budget">
-      <div class="login-content bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-lg mx-auto"> <!-- Removed border classes -->
-          <form id="add-budget-form" action="{% url 'add_budget' 'continuing' %}" method="post">
-              {% csrf_token %}
-              <h2 class="title text-2xl font-semibold text-gray-900 dark:text-white mb-6">Add Project Budget</h2>
-              <input type="hidden" name="entry_code" id="budget-code">
-              
-              <div class="input-div-new mb-4">
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="budget_name">Budget Name</label>
-                  <input type="text" name="budget_name" id="budget_name" class="input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
-              </div>
-              
-              <div class="input-div-new mb-4">
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="budget_date">Date</label>
-                  <input type="date" name="budget_date" id="budget_date" class="input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
-              </div>
-              
-              <div class="input-div-new mb-6">
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="added_budget">Added Budget</label>
-                  <input type="text" name="added_budget" id="budget-input" class="input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
-              </div>
-              
-              <div class="flex flex-col space-y-4">
-                  <button type="submit" class="w-full px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 focus:outline-none">
-                      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                      </svg>
-                      Submit
-                  </button>
-                  <a href="{% url 'continuing_projects' %}" class="btn-cancel bg-gray-100 text-gray-700 px-4 py-2 rounded-md shadow hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 flex items-center justify-center">
-                      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                      </svg>
-                      Exit
-                  </a>
-              </div>
-          </form>
-      </div>
-  </div>
-    <!-- OBLIGATION -->
-    <div class="details" id="obligation">
-        <div class="login-content bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-lg mx-auto"> <!-- Removed border classes -->
-            <form id="add-obligation-form" action="{% url 'add_obligation' 'continuing' %}" method="post">
-                {% csrf_token %}
-                <h2 class="title text-2xl font-semibold text-gray-900 dark:text-white mb-6">Add Project Obligation</h2>
-                <input type="hidden" name="entry-code" id="obligation-code">
-
-                <div class="input-div-new mb-4">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="obligation_name">Obligation Name</label>
-                    <input type="text" name="obligation_name" id="obligation_name" class="input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
-                </div>
-                
-                <div class="input-div-new mb-4">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="obligation_date">Date</label>
-                    <input type="date" name="obligation_date" id="obligation_date" class="input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
-                </div>
-                
-                <div class="input-div-new mb-6">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="obligation_input">Obligation Spent</label>
-                    <input type="text" name="obligation_input" id="obligation-input" class="input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
-                </div>
-                
-                <div class="flex flex-col space-y-4">
-                    <button type="submit" class="w-full px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 focus:outline-none">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        Submit
-                    </button>
-                    <a href="{% url 'continuing_projects' %}" class="btn-cancel bg-gray-100 text-gray-700 px-4 py-2 rounded-md shadow hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Exit
-                    </a>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="details" id="delete">
-      <div class="login-content bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-lg mx-auto"> <!-- Centering with mx-auto -->
-        <form id="deleteForm" action="{% url 'delete_entry' 'continuing' %}" method="post">
-            {% csrf_token %}
-            <!-- Modal Header -->
-            <div class="text-center mb-6">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Confirm Project Removal</h2>
-                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">You are about to permanently remove this project from the system. This action cannot be reversed.</p>
-            </div>
-            <!-- Project Identifier -->
-            <div class="mb-6">
-                <label for="delete-code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Project Reference Number</label>
-                <input type="text" name="entry_code" id="delete-code" readonly class="w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 dark:focus:ring-red-600">
-            </div>
-            <!-- Action Controls -->
-            <div class="flex flex-col gap-3">
-                <button type="button" onclick="confirmDelete()" class="w-full px-4 py-2.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 focus:outline-none">Proceed with Removal</button>
-                <a href="{% url 'continuing_projects' %}" class="w-full px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 text-center">Return to Projects</a>
-            </div>
-        </form>
-    </div>
-  </div>
-    <!-- Delete -->
-
-    <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
-   
-    <!-- PIE CHART JS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  
-
-<script>  
-  //INPUT MASKING 
-  document.getElementById('budget-input').addEventListener('input', function (e) {
-      // Remove any non-numeric characters except commas
-      let value = e.target.value.replace(/[^0-9]/g, '');
-      
-      // Format the number with commas
-      value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-      // Set the formatted value back to the input field
-      e.target.value = value;
-  });
-</script>
-
-<script>  
-  //INPUT MASKING 
-  document.getElementById('obligation-input').addEventListener('input', function (e) {
-      // Remove any non-numeric characters except commas
-      let value = e.target.value.replace(/[^0-9]/g, '');
-      
-      // Format the number with commas
-      value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-      // Set the formatted value back to the input field
-      e.target.value = value;
-  });
-</script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var chartContainers = document.querySelectorAll('.chart-container');
-        chartContainers.forEach(function(container) {
-          var utilizationRateElement = container.querySelector('.utilizationRate');
-          var utilizationRate = parseFloat(utilizationRateElement.textContent);
-          var remainingPercentage = 100 - utilizationRate;
-          var canvas = container.querySelector('.pie-chart');
-          var ctx = canvas.getContext('2d');
-          new Chart(ctx, {
-            type: 'pie',
-            data: {
-              labels: ['Utilized', 'Remaining'],
-              datasets: [{
-                data: [utilizationRate, remainingPercentage],
-                backgroundColor: ['rgba(0, 123, 255, 0.6)', // Utilized (blue)
-                  'rgba(135, 206, 235, 0.6)' // Remaining (sky blue)
-                ],
-                borderColor: ['rgba(0, 123, 255, 1)', 'rgba(135, 206, 235, 1)'],
-                borderWidth: 1
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              legend: {
-                position: 'top',
-              },
-              title: {
-                display: true,
-                text: 'Utilization Rate'
-              },
-              animation: {
-                animateScale: true,
-                animateRotate: true
-              }
-            }
-          });
-        });
-      });
-    </script>
-    <!-- Details js -->
     <script>
       function showDetails(code, event) {
-        // Prevent event bubbling
         event.preventDefault();
-        event.stopPropagation();
         
-        // Show overlay and blur background
-        document.getElementById('overlay').style.display = 'block';
-        document.querySelector('main').style.filter = 'blur(10px)';
-        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
-        
-        // Hide all detail items first
-        var details = document.getElementsByClassName('entry-item');
-        for (var i = 0; i < details.length; i++) {
-            details[i].style.display = 'none';
-        }
-        
-        // Show the selected detail item
-        var detailElement = document.getElementById('details-' + code);
-        if (detailElement) {
-            detailElement.style.display = 'block';
-            document.getElementById('details').style.display = 'block';
-        } else {
-            console.error('Detail element not found for code:', code);
-        }
+        const detailsElement = document.getElementById(`details-${code}`);
+        if (!detailsElement) return;
+
+        // Get all the data from the details element
+        const data = {
+            ppa: detailsElement.querySelector('#fullName').textContent,
+            implementing_unit: detailsElement.querySelector('#username').textContent,
+            location: detailsElement.querySelector('#email').textContent,
+            appropriation: detailsElement.querySelector('#phoneNumber').textContent,
+            remarks: detailsElement.querySelector('#password').textContent,
+            start_date: detailsElement.querySelector('#confirmPassword').textContent,
+            end_date: detailsElement.querySelector('#endDate').textContent,
+            code: detailsElement.querySelector('#code').textContent,
+            services: detailsElement.querySelector('#services').textContent,
+            year: detailsElement.querySelector('#year').textContent,
+            total_budget: detailsElement.querySelector('#totalBudget').textContent,
+            added_budget: detailsElement.querySelector('#totalSpent').textContent,
+            remaining_balance: detailsElement.querySelector('#remainingBalance').textContent,
+            remaining_obligations: detailsElement.querySelector('#remainingObligations').textContent,
+            total_obligations: detailsElement.querySelector('#totalObligations').textContent,
+            total_disbursements: detailsElement.querySelector('#totalAddedBudget').textContent,
+            utilization_rate: detailsElement.querySelector('.utilizationRate').textContent
+        };
+
+        // Create the HTML content for SweetAlert
+        const htmlContent = `
+            <div class="text-left">
+                <!-- Top section: Basic Info and Chart -->
+                <div class="grid grid-cols-2 gap-8 mb-6">
+                    <!-- Basic Information -->
+                    <div>
+                        <h3 class="font-semibold text-lg mb-3 text-gray-700">Basic Information</h3>
+                        <div class="bg-blue-50 p-4 rounded-lg space-y-2">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <h4 class="font-medium text-blue-700 mb-2">Project Details</h4>
+                                    <p><span class="font-medium text-gray-600">PPA:</span> ${data.ppa}</p>
+                                    <p><span class="font-medium text-gray-600">Code:</span> ${data.code}</p>
+                                    <p><span class="font-medium text-gray-600">Services:</span> ${data.services}</p>
+                                    <p><span class="font-medium text-gray-600">Year:</span> ${data.year}</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-blue-700 mb-2">Location & Unit</h4>
+                                    <p><span class="font-medium text-gray-600">Location:</span> ${data.location}</p>
+                                    <p><span class="font-medium text-gray-600">Unit:</span> ${data.implementing_unit}</p>
+                                    <p><span class="font-medium text-gray-600">Start:</span> ${data.start_date}</p>
+                                    <p><span class="font-medium text-gray-600">End:</span> ${data.end_date}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Utilization Rate Chart with Toggle -->
+                    <div class="flex flex-col items-center bg-blue-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between w-full mb-3">
+                            <h3 class="font-semibold text-lg text-gray-700">Utilization Rate</h3>
+                            <button id="toggleChart" class="px-3 py-1 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-100 rounded-md transition-colors duration-200">
+                                <span class="show-text">Show Chart</span>
+                                <span class="hide-text hidden">Hide Chart</span>
+                            </button>
+                        </div>
+                        <div id="chartContainer" class="hidden w-full flex flex-col items-center justify-center">
+                            <div class="text-center mb-4">
+                                <span class="text-2xl font-bold text-blue-700">${data.utilization_rate}%</span>
+                                <p class="text-sm text-gray-600">Current Utilization</p>
+                            </div>
+                            <div class="flex justify-center" style="width: 80%; height: 250px;">
+                                <canvas id="utilizationChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom section: Financial Details -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-3 text-gray-700">Financial Details</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-blue-700 mb-2">Budget Summary</h4>
+                            <p><span class="font-medium text-gray-600">Total Budget:</span> ${data.total_budget}</p>
+                            <p><span class="font-medium text-gray-600">Added Budget:</span> ${data.added_budget}</p>
+                            <p><span class="font-medium text-gray-600">Remaining Balance:</span> ${data.remaining_balance}</p>
+                        </div>
+
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-green-700 mb-2">Obligations</h4>
+                            <p><span class="font-medium text-gray-600">Total Obligations:</span> ${data.total_obligations}</p>
+                            <p><span class="font-medium text-gray-600">Remaining Obligations:</span> ${data.remaining_obligations}</p>
+                        </div>
+
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-purple-700 mb-2">Disbursement Information</h4>
+                            <p><span class="font-medium text-gray-600">Total Disbursements:</span> ${data.total_disbursements}</p>
+                            <p><span class="font-medium text-gray-600">Utilization Rate:</span> ${data.utilization_rate}%</p>
+                        </div>
+
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-yellow-700 mb-2">Status</h4>
+                            <p><span class="font-medium text-gray-600">Remarks:</span> ${data.remarks}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Show SweetAlert with the details
+        Swal.fire({
+            title: 'Project Details',
+            html: htmlContent,
+            width: '1000px',
+            showCloseButton: true,
+            showConfirmButton: false,
+            didRender: () => {
+                // Initialize Chart.js for utilization rate
+                const ctx = document.getElementById('utilizationChart');
+                const chartContainer = document.getElementById('chartContainer');
+                const toggleButton = document.getElementById('toggleChart');
+                const showText = toggleButton.querySelector('.show-text');
+                const hideText = toggleButton.querySelector('.hide-text');
+
+                toggleButton.addEventListener('click', () => {
+                    const isHidden = chartContainer.classList.contains('hidden');
+                    chartContainer.classList.toggle('hidden');
+                    showText.classList.toggle('hidden');
+                    hideText.classList.toggle('hidden');
+                });
+
+                if (ctx) {
+                    new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Utilized', 'Remaining'],
+                            datasets: [{
+                                data: [
+                                    parseFloat(data.utilization_rate),
+                                    100 - parseFloat(data.utilization_rate)
+                                ],
+                                backgroundColor: [
+                                    'rgba(0, 123, 255, 0.6)',
+                                    'rgba(135, 206, 235, 0.6)'
+                                ],
+                                borderColor: [
+                                    'rgba(0, 123, 255, 1)',
+                                    'rgba(135, 206, 235, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                },
+                                title: {
+                                    display: false
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
       }
 
       // Function to hide overlay and reset pointer events
@@ -810,151 +772,6 @@
       // Prevent clicks on the details section from propagating
       document.getElementById('details').addEventListener('click', function(event) {
           event.stopPropagation(); // Prevent click events from bubbling up
-      });
-    </script>
-    <!-- Update js -->
-    <script>
-      function showUpdateForm(code) {
-        var allUpdateForms = document.querySelectorAll('[id^="updateForm_"]');
-        allUpdateForms.forEach(function(form) {
-          form.style.display = 'none';
-        });
-        var updateForm = document.getElementById('updateForm_' + code);
-        if (updateForm) {
-          updateForm.style.display = 'block';
-        }
-        document.getElementById('update').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-        document.querySelector('main').style.filter = 'blur(10px)';
-        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
-      }
-    </script>
-    <script>
-      // Function to handle form submission
-      function handleSubmit(event) {
-        event.preventDefault(); // Prevent default form submission
-        // Validate form fields
-        if (!validateForm(event.target)) {
-          // If form validation fails, do not proceed
-          console.log("Form validation failed!");
-          return;
-        }
-        // Show confirmation dialog using SweetAlert2
-        Swal.fire({
-          title: "Are you sure?",
-          text: "Once updated, It will alter data",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, update it!",
-          cancelButtonText: "No, cancel!",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // If user confirms, submit the form
-            var form = event.target;
-            showLoader(); // Show loading spinner
-            form.submit();
-          } else {
-            // If user cancels, do nothing
-            // Optional: Redirect or perform other actions
-            console.log("Update canceled!");
-          }
-        });
-      }
-      // Function to validate form fields
-      function validateForm(form) {
-        // Example: Check if required fields are empty
-        var requiredFields = form.querySelectorAll("[required]");
-        for (var i = 0; i < requiredFields.length; i++) {
-          if (requiredFields[i].value.trim() === "") {
-            // If a required field is empty, return false
-            return false;
-          }
-        }
-        return true; // Return true if all validations pass
-      }
-    </script>
-    <!-- Budget js -->
-    <script>
-      function showAddBudget(budget_code) {
-        document.getElementById('budget-code').value = budget_code;
-        document.getElementById('budget').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-        document.querySelector('main').style.filter = 'blur(10px)';
-        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
-      }
-    </script>
-  
-    <!-- Obligation js -->
-    <script>
-      function showAddObligationForm(entryCode) {
-        document.getElementById('obligation-code').value = entryCode;
-        document.getElementById('obligation').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-        document.querySelector('main').style.filter = 'blur(10px)';
-        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
-      }
-    </script>
-   
-    <!-- Delete js -->
-    <script>
-      function showDeleteForm(code) {
-        document.getElementById('delete-code').value = code;
-        document.getElementById('delete').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-        document.querySelector('main').style.filter = 'blur(10px)';
-        document.querySelector('main').classList.add('pointer-events-none'); // Disable pointer events
-      }
-    </script>
-   <script>
-    function confirmDelete() {
-      // Show SweetAlert confirmation dialog
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // If user confirms deletion, submit the form
-          var form = document.getElementById('deleteForm');
-          showLoader(); // Show loading spinner
-          form.submit();
-        }
-      });
-    }
-  </script>     
-    <script>
-      function hideOverlay() {
-        // Only hide overlay and forms when clicking directly on the overlay
-        var details = document.getElementById('details');
-        var update = document.getElementById('update');
-        var budget = document.getElementById('budget');
-        var obligation = document.getElementById('obligation');
-        var deleteForm = document.getElementById('delete');
-
-        // Remove blur effect from main content
-        document.querySelector('main').style.filter = 'none';
-        document.getElementById('overlay').style.display = 'none';
-
-        // Hide all forms including details
-        if (details) details.style.display = 'none';
-        if (update) update.style.display = 'none';
-        if (budget) budget.style.display = 'none';
-        if (obligation) obligation.style.display = 'none';
-        if (deleteForm) deleteForm.style.display = 'none';
-      }
-
-      // Update the overlay click event listener
-      document.getElementById('overlay').addEventListener('click', function(event) {
-        // Only trigger hideOverlay if clicking directly on the overlay
-        if (event.target === this) {
-          hideOverlay();
-        }
       });
     </script>
 
@@ -1307,6 +1124,7 @@ th, td {
 .p-2.sm\:p-4.md\:p-8 {
     width: 100% !important;
     min-width: 0 !important;
+    flex-shrink: 0 !important;
 }
 
 /* Ensure consistent spacing */
@@ -1327,6 +1145,272 @@ th, td {
     pointer-events: none; /* Prevents any mouse events */
 }
 </style>
+
+<script>
+function showAddObligationForm(code) {
+    Swal.fire({
+        title: 'Add Project Obligation',
+        html: `
+            <form id="obligation-form" class="text-left">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Obligation Name</label>
+                    <input type="text" name="obligation_name" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                    <input type="date" name="obligation_date" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Obligation Amount</label>
+                    <input type="number" name="obligation_input" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                </div>
+            </form>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        preConfirm: () => {
+            const form = document.getElementById('obligation-form');
+            const formData = new FormData(form);
+            return Object.fromEntries(formData);
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const formData = new FormData();
+            Object.entries(result.value).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+            formData.append('entry-code', code);
+            formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+            showLoader();
+            fetch('{% url "add_obligation" "continuing" %}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Obligation added successfully',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.error || 'An error occurred',
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            });
+        }
+    });
+}
+
+function showAddBudget(code) {
+    Swal.fire({
+        title: 'Add Project Budget',
+        html: `
+            <form id="budget-form" class="text-left">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Budget Name</label>
+                    <input type="text" name="budget_name" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                    <input type="date" name="budget_date" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Added Budget</label>
+                    <input type="number" name="added_budget" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                </div>
+            </form>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        preConfirm: () => {
+            const form = document.getElementById('budget-form');
+            const formData = new FormData(form);
+            return Object.fromEntries(formData);
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const formData = new FormData();
+            Object.entries(result.value).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+            formData.append('entry_code', code);
+            formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+            showLoader();
+            fetch('{% url "add_budget" "continuing" %}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Budget added successfully',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.error || 'An error occurred',
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            });
+        }
+    });
+}
+
+function showUpdateForm(code) {
+    const form = document.getElementById('updateForm_' + code);
+    const formData = new FormData(form);
+    
+    Swal.fire({
+        title: 'Update Project',
+        html: `
+            <form id="update-form" class="text-left">
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">PPA</label>
+                        <input type="text" name="ppa" class="w-full px-3 py-2 border border-gray-300 rounded-md" value="${formData.get('ppa')}" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Implementing Unit</label>
+                        <select name="implementing_unit" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                            <option value="${formData.get('implementing_unit')}">${formData.get('implementing_unit')}</option>
+                            <option value="Mayor's Office">Mayor's Office</option>
+                            <option value="Tourism Office">Tourism Office</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                        <input type="text" name="location" class="w-full px-3 py-2 border border-gray-300 rounded-md" value="${formData.get('location')}" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Remarks</label>
+                        <select name="remarks" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                            <option value="${formData.get('remarks')}">${formData.get('remarks')}</option>
+                            <option value="No PPMP/APP/POW">No PPMP/APP/POW</option>
+                            <option value="Awarded Already">Awarded Already</option>
+                            <option value="Finished Already">Finished Already</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Update',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        preConfirm: () => {
+            const form = document.getElementById('update-form');
+            const formData = new FormData(form);
+            return Object.fromEntries(formData);
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const formData = new FormData();
+            Object.entries(result.value).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+            formData.append('entry_code', code);
+            formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+            showLoader();
+            fetch('{% url "update_entry" "continuing" %}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Project updated successfully',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.error || 'An error occurred',
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            });
+        }
+    });
+}
+
+function showDeleteForm(code) {
+    Swal.fire({
+        title: 'Delete Project',
+        text: 'Are you sure you want to delete this project? This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const formData = new FormData();
+            formData.append('entry_code', code);
+            formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+            showLoader();
+            fetch('{% url "delete_entry" "continuing" %}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'Project has been deleted.',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.error || 'An error occurred while deleting the project',
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            });
+        }
+    });
+}
+</script>
 
   </body>
 </html>

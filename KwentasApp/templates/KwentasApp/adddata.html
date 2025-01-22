@@ -222,46 +222,56 @@
             const sidebarToggle = document.querySelector('[data-drawer-target="logo-sidebar"]');
             
             function adjustMainContentMargin() {
-                const isSidebarVisible = !sidebar.classList.contains('-translate-x-full');
+                // Get computed style to check if sidebar is visible
+                const sidebarStyle = window.getComputedStyle(sidebar);
+                const isSidebarVisible = sidebarStyle.display !== 'none' && 
+                                       !sidebar.classList.contains('-translate-x-full');
                 
-                if (window.innerWidth < 768) { // mobile
+                if (window.innerWidth < 640) { // sm breakpoint
                     mainContent.style.marginLeft = isSidebarVisible ? '16rem' : '1rem';
-                } else if (window.innerWidth < 1024) { // tablet
+                } else if (window.innerWidth < 768) { // md breakpoint
                     mainContent.style.marginLeft = isSidebarVisible ? '16rem' : '5rem';
-                } else { // desktop
+                } else if (window.innerWidth < 1024) { // lg breakpoint
+                    mainContent.style.marginLeft = isSidebarVisible ? '16rem' : '10rem';
+                } else { // xl and larger
                     mainContent.style.marginLeft = isSidebarVisible ? '16rem' : '15rem';
                 }
             }
 
-            // Listen for clicks anywhere in the document
-            document.addEventListener('click', function(event) {
-                // Check if the click was on or inside the toggle button
-                if (event.target.closest('[data-drawer-target="logo-sidebar"]') || 
-                    event.target.closest('[data-drawer-hide="logo-sidebar"]')) {
-                    setTimeout(adjustMainContentMargin, 100);
+            // Watch for clicks on both the hamburger menu and close button
+            document.addEventListener('click', function(e) {
+                const isToggleButton = e.target.closest('[data-drawer-target="logo-sidebar"]');
+                const isCloseButton = e.target.closest('[data-drawer-hide="logo-sidebar"]');
+                
+                if (isToggleButton || isCloseButton) {
+                    // Give time for Flowbite's toggle to complete
+                    setTimeout(adjustMainContentMargin, 50);
                 }
             });
 
-            // Listen for sidebar transitions
-            sidebar.addEventListener('transitionend', adjustMainContentMargin);
-
-            // Listen for window resize
-            window.addEventListener('resize', adjustMainContentMargin);
-
-            // Initial adjustment
-            adjustMainContentMargin();
-
-            // Create a MutationObserver to watch for class changes on the sidebar
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
+            // Watch for class changes on sidebar
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
                     if (mutation.attributeName === 'class') {
                         setTimeout(adjustMainContentMargin, 50);
                     }
                 });
             });
 
-            // Start observing the sidebar for class changes
-            observer.observe(sidebar, { attributes: true });
+            observer.observe(sidebar, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(adjustMainContentMargin, 100);
+            });
+
+            // Initial adjustment
+            adjustMainContentMargin();
         });
 
         // Dropdown toggle functions
